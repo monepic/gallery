@@ -7,9 +7,8 @@ import com.monepic.gallery.obj.Album;
 
 public interface AlbumService {
 
-	List<Album> listAlbums();
+    List<Album> listAlbums();
 
-	Album getAlbumById(UUID id);
-	
+    Album getAlbumById(UUID id);
+
 }
-	

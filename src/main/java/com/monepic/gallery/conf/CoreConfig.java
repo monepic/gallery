@@ -1,4 +1,4 @@
-package com.monepic.conf;
+package com.monepic.gallery.conf;
 
 import org.springframework.context.annotation.Configuration;
 

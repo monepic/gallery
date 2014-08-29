@@ -6,5 +6,5 @@ import com.monepic.gallery.obj.Image;
 
 public interface ImageService {
 
-	Image getImageById(UUID id);
+    Image getImageById(UUID id);
 }

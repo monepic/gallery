@@ -8,24 +8,24 @@ import org.springframework.hateoas.Identifiable;
 
 public class BaseObject implements Identifiable<UUID> {
 
-	protected final UUID id = UUID.randomUUID();
+    protected final UUID id = UUID.randomUUID();
 
-	public UUID getId() { return id; }
-	
-	@Override
-	public int hashCode() { return id.hashCode(); }
+    public UUID getId() { return id; }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (!getClass().equals(obj.getClass())) { return false; }
+    @Override
+    public int hashCode() { return id.hashCode(); }
 
-		return Objects.equals(this.getId(), ((BaseObject)obj).getId());
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (!getClass().equals(obj.getClass())) { return false; }
 
-	@Override
-	public String toString() { 
-		return String.format("%s(%d)", getClass(), id);
-	}
+        return Objects.equals(this.getId(), ((BaseObject)obj).getId());
+    }
+
+    @Override
+    public String toString() { 
+        return String.format("%s(%d)", getClass(), id);
+    }
 
 }

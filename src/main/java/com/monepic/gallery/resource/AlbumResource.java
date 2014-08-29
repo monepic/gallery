@@ -4,34 +4,36 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
 
 import com.monepic.api.AlbumController;
+import com.monepic.api.Api;
 import com.monepic.gallery.obj.Album;
 import com.monepic.gallery.obj.Image;
 
 public class AlbumResource extends ResourceSupport {
 
-	public final String name;
-	public final List<ImageResource> images;
+    public final UUID albumId;
+    public final String name;
 
-	public AlbumResource(String name, List<ImageResource> images) {
-		this.name = name;
-		this.images = images;
-	}
+    public AlbumResource(UUID albumId, String name) {
+        this.name = name;
+        this.albumId = albumId;
+    }
 
-	public static AlbumResource fromAlbum(Album album) {
+    public static AlbumResource fromAlbum(Album album) {
 
-		List <ImageResource> images = new LinkedList<ImageResource>();
+        List <ImageResource> images = new LinkedList<ImageResource>();
 
-		for(Image image : album.getImages()) {
-			images.add(ImageResource.fromImage(image));
-		}
+        for(Image image : album.getImages()) {
+            images.add(ImageResource.fromImage(image));
+        }
 
-		AlbumResource resource = new AlbumResource(album.getName(), images);
-		resource.add(linkTo(AlbumController.class).slash(album).withSelfRel());
-
-		return resource;
-	}
+        AlbumResource resource = new AlbumResource(album.getId(), album.getName());
+                resource.add(linkTo(AlbumController.class).slash(album).withSelfRel());
+        resource.add(linkTo(AlbumController.class).slash(album).slash(Api.IMAGES).withRel(Api.IMAGES));
+        return resource;
+    }
 }
