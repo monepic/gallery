@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.monepic.gallery.obj.Album;
 import com.monepic.gallery.obj.Image;
+import com.monepic.gallery.util.ThumbnailUtils;
 
 @Service
 public class Storage implements AlbumService, ImageService {
@@ -58,6 +59,7 @@ public class Storage implements AlbumService, ImageService {
         Image image = new Image();
         image.setName(file.getName());
         image.setResource(new FileSystemResource(file));
+        image.setThumbnail(ThumbnailUtils.getThumb(image.getResource()));
         return image;
     }
 

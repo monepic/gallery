@@ -14,23 +14,23 @@ import com.monepic.gallery.obj.Image;
 public class ImageResource extends ResourceSupport {
 
     public final String name;
-    public final String imageHref;
 
 
-    public ImageResource(String name, Link href) {
+    public ImageResource(String name) {
         this.name = name;
-        this.imageHref = href.getHref();
+      
     }
 
 
     public static ImageResource fromImage(Image image) {
 
-        Link href = linkTo(ImageController.class).slash(image).slash("src").withRel("src");
+        
 
-        ImageResource resource = new ImageResource(image.getName(), href);
+        ImageResource resource = new ImageResource(image.getName());
 
         resource.add(linkTo(ImageController.class).slash(image).withSelfRel());
-
+        resource.add(linkTo(ImageController.class).slash(image).slash("src").withRel("src"));
+        resource.add(linkTo(ImageController.class).slash(image).slash("thumb").withRel("thumb"));
         return resource;
     }
 

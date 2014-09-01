@@ -12,4 +12,8 @@ public class Image extends BaseObject {
     public void setResource(Resource resource) { this.resource = resource; }
     public Resource getResource() { return resource; }
 
+    private Resource thumbnail;
+    public void setThumbnail(Resource thumbnail) { this.thumbnail = thumbnail; }
+    public Resource getThumbnail() { return thumbnail; }
+    
 }

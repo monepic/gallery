@@ -17,6 +17,7 @@ import com.monepic.gallery.obj.Image;
 import com.monepic.gallery.resource.AlbumResource;
 import com.monepic.gallery.resource.ImageResource;
 import com.monepic.gallery.service.ImageService;
+import com.monepic.gallery.util.ThumbnailUtils;
 
 
 @Controller
@@ -24,22 +25,28 @@ import com.monepic.gallery.service.ImageService;
 @ExposesResourceFor(AlbumResource.class)
 public class ImageController {
 
-    @Autowired ImageService imageService;
+	@Autowired ImageService imageService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ImageResource> get(@PathVariable UUID id) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<ImageResource> get(@PathVariable UUID id) {
 
-        Image image = imageService.getImageById(id);
+		Image image = imageService.getImageById(id);
 
-        if (image == null) {
-            return new ResponseEntity<ImageResource>(HttpStatus.NOT_FOUND);
-        }
+		if (image == null) {
+			return new ResponseEntity<ImageResource>(HttpStatus.NOT_FOUND);
+		}
 
-        return new ResponseEntity<ImageResource>(ImageResource.fromImage(image), HttpStatus.OK);
-    }
+		return new ResponseEntity<ImageResource>(ImageResource.fromImage(image), HttpStatus.OK);
+	}
 
-    @RequestMapping(value="/{id}/src", method = RequestMethod.GET)
-    public @ResponseBody Resource getSrc(@PathVariable UUID id) {
-        return imageService.getImageById(id).getResource();
-    }
+	@RequestMapping(value="/{id}/src", method = RequestMethod.GET)
+	public @ResponseBody Resource getSrc(@PathVariable UUID id) {
+		return imageService.getImageById(id).getResource();
+	}
+
+	@RequestMapping(value="{id}/thumb", method = RequestMethod.GET, produces="image/png")
+	public @ResponseBody Resource getThumb(@PathVariable UUID id) {
+			return imageService.getImageById(id).getThumbnail();
+	}
+
 }
