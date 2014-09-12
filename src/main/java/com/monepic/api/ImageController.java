@@ -17,7 +17,6 @@ import com.monepic.gallery.obj.Image;
 import com.monepic.gallery.resource.AlbumResource;
 import com.monepic.gallery.resource.ImageResource;
 import com.monepic.gallery.service.ImageService;
-import com.monepic.gallery.util.ThumbnailUtils;
 
 
 @Controller

@@ -3,7 +3,6 @@ package com.monepic.gallery.util;
 
 import static org.imgscalr.Scalr.OP_ANTIALIAS;
 import static org.imgscalr.Scalr.OP_BRIGHTER;
-import static org.imgscalr.Scalr.pad;
 import static org.imgscalr.Scalr.resize;
 
 import java.awt.image.BufferedImage;
