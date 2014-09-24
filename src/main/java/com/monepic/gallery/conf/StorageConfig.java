@@ -32,6 +32,7 @@ public class StorageConfig {
 
         new Thread() {
             public void run() {
+                LOG.info("Starting loading files");
 
                 File basedir = new File(BASE_DIR);
 
