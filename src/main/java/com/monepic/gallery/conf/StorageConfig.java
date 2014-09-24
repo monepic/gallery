@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ import com.monepic.gallery.util.ImageUtils;
 
 @Component
 public class StorageConfig {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StorageConfig.class);
 
     public static String BASE_DIR = "/srv/albums";
 
@@ -36,7 +40,9 @@ public class StorageConfig {
                 for (File f : basedir.listFiles()) {
                     if (f.isFile() && f.getName().endsWith("JPG")) { anonymousImages.add(toImage(f)); }
                     else if (f.isDirectory()) {
-                      albumRepository.save(toAlbum(f));
+                        Album a = toAlbum(f);
+                        albumRepository.save(a);
+                        LOG.info("Saved album {}", a);
                     }
                 }
 
@@ -45,7 +51,10 @@ public class StorageConfig {
                     a.setName("Untitled");
                     a.setImages(anonymousImages);
                     albumRepository.save(a);
+                    LOG.info("Saved untitled album {}", a);
                 }
+
+                LOG.info("** Image load completed **");
             }
         }.start();
     }
@@ -74,7 +83,5 @@ public class StorageConfig {
 
         return a;
     }
-
-
 
 }

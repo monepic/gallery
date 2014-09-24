@@ -23,11 +23,11 @@ public class Image extends BaseObject {
     @Lob
     private byte[] thumbnail;
     public void setThumbnail(byte[] thumbnail) { this.thumbnail = thumbnail; }
-    public ByteArrayResource getThumbnail() { return new ByteArrayResource(thumbnail); }
+    public Resource getThumbnail() { return new ByteArrayResource(thumbnail); }
 
     @Lob
     private byte[] medium;
     public void setMedium(byte[] medium) { this.medium = medium; }
-    public ByteArrayResource getMedium() { return new ByteArrayResource(medium); }
+    public Resource getMedium() { return new ByteArrayResource(medium); }
 
  }
