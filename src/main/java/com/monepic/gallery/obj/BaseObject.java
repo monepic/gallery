@@ -1,19 +1,27 @@
 package com.monepic.gallery.obj;
 
 import java.util.Objects;
-import java.util.UUID;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.springframework.hateoas.Identifiable;
 
+@MappedSuperclass
+public class BaseObject implements Identifiable<Long> {
 
-public class BaseObject implements Identifiable<UUID> {
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    protected long id;// = UUID.randomUUID();
 
-    protected final UUID id = UUID.randomUUID();
 
-    public UUID getId() { return id; }
-
+    public Long getId() { return id; }
+    public void setId(long id) { this.id = id; }
+    
     @Override
-    public int hashCode() { return id.hashCode(); }
+    public int hashCode() { return (int) (id ^ (id >>> 32)); }
 
     @Override
     public boolean equals(Object obj) {

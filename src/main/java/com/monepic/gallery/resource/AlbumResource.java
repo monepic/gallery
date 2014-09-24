@@ -4,7 +4,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.hateoas.ResourceSupport;
 
@@ -15,10 +14,10 @@ import com.monepic.gallery.obj.Image;
 
 public class AlbumResource extends ResourceSupport {
 
-    public final UUID albumId;
+    public final long albumId;
     public final String name;
 
-    public AlbumResource(UUID albumId, String name) {
+    public AlbumResource(long albumId, String name) {
         this.name = name;
         this.albumId = albumId;
     }

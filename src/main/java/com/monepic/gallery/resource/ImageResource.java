@@ -17,19 +17,19 @@ public class ImageResource extends ResourceSupport {
 
     public ImageResource(String name) {
         this.name = name;
-      
+
     }
 
 
     public static ImageResource fromImage(Image image) {
 
-        
 
         ImageResource resource = new ImageResource(image.getName());
 
         resource.add(linkTo(ImageController.class).slash(image).withSelfRel());
         resource.add(linkTo(ImageController.class).slash(image).slash("src").withRel("src"));
         resource.add(linkTo(ImageController.class).slash(image).slash("thumb").withRel("thumb"));
+        resource.add(linkTo(ImageController.class).slash(image).slash("medium").withRel("medium"));
         return resource;
     }
 

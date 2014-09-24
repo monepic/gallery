@@ -2,7 +2,6 @@ package com.monepic.api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
@@ -16,16 +15,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.monepic.gallery.obj.Album;
+import com.monepic.gallery.repo.AlbumRepository;
 import com.monepic.gallery.resource.AlbumResource;
 import com.monepic.gallery.resource.ImageResource;
-import com.monepic.gallery.service.AlbumService;
 
 @Controller
 @RequestMapping(Api.ROOT + Api.ALBUMS)
 @ExposesResourceFor(AlbumResource.class)
 public class AlbumController {
 
-    @Autowired AlbumService albumService;
+    @Autowired AlbumRepository albumRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = RequestMethod.GET)
@@ -33,17 +32,17 @@ public class AlbumController {
 
         List<AlbumResource> albums = new ArrayList<AlbumResource>();
 
-        for (Album album : albumService.listAlbums()) {
-            albums.add(AlbumResource.fromAlbum(album));	    
+        for (Album album : albumRepository.findAll()) {
+            albums.add(AlbumResource.fromAlbum(album));
         }
 
         return albums;
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<AlbumResource> get(@PathVariable UUID id) {
+    public ResponseEntity<AlbumResource> get(@PathVariable long id) {
 
-        Album album = albumService.getAlbumById(id);
+        Album album = albumRepository.findOne(id);
 
         if (album == null) { return new ResponseEntity<AlbumResource>(HttpStatus.NOT_FOUND); }
 
@@ -51,9 +50,9 @@ public class AlbumController {
     }
 
     @RequestMapping(value="/{id}/" + Api.IMAGES, method = RequestMethod.GET)
-    public ResponseEntity<List<ImageResource>> getImages(@PathVariable UUID id) {
+    public ResponseEntity<List<ImageResource>> getImages(@PathVariable long id) {
 
-        Album album = albumService.getAlbumById(id);
+        Album album = albumRepository.findOne(id);
 
         if (album == null) { return new ResponseEntity<List<ImageResource>>(HttpStatus.NOT_FOUND); }
 

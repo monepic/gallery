@@ -1,6 +1,6 @@
 package com.monepic.api;
 
-import java.util.UUID;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.monepic.gallery.obj.Image;
+import com.monepic.gallery.repo.ImageRepository;
 import com.monepic.gallery.resource.AlbumResource;
 import com.monepic.gallery.resource.ImageResource;
-import com.monepic.gallery.service.ImageService;
 
 
 @Controller
@@ -24,28 +24,37 @@ import com.monepic.gallery.service.ImageService;
 @ExposesResourceFor(AlbumResource.class)
 public class ImageController {
 
-	@Autowired ImageService imageService;
+    @Autowired ImageRepository imageRepository;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ImageResource> get(@PathVariable UUID id) {
+    @RequestMapping(method = RequestMethod.GET)
+    public @ResponseBody List<ImageResource> images() {
 
-		Image image = imageService.getImageById(id);
+        return ImageResource.fromImages(imageRepository.findAll());
+    }
 
-		if (image == null) {
-			return new ResponseEntity<ImageResource>(HttpStatus.NOT_FOUND);
-		}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ImageResource> get(@PathVariable long id) {
 
-		return new ResponseEntity<ImageResource>(ImageResource.fromImage(image), HttpStatus.OK);
-	}
+        Image image = imageRepository.findOne(id);
 
-	@RequestMapping(value="/{id}/src", method = RequestMethod.GET)
-	public @ResponseBody Resource getSrc(@PathVariable UUID id) {
-		return imageService.getImageById(id).getResource();
-	}
+        if (image == null) { return new ResponseEntity<ImageResource>(HttpStatus.NOT_FOUND); }
 
-	@RequestMapping(value="{id}/thumb", method = RequestMethod.GET, produces="image/png")
-	public @ResponseBody Resource getThumb(@PathVariable UUID id) {
-			return imageService.getImageById(id).getThumbnail();
-	}
+        return new ResponseEntity<ImageResource>(ImageResource.fromImage(image), HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/{id}/src", method = RequestMethod.GET, produces = "image/jpeg")
+    public @ResponseBody Resource getSrc(@PathVariable long id) {
+        return imageRepository.findOne(id).getResource();
+    }
+
+    @RequestMapping(value="{id}/thumb", method = RequestMethod.GET, produces = "image/png")
+    public @ResponseBody Resource getThumb(@PathVariable long id) {
+        return imageRepository.findOne(id).getThumbnail();
+    }
+
+    @RequestMapping(value="{id}/medium", method = RequestMethod.GET, produces = "image/png")
+    public @ResponseBody Resource getMedium(@PathVariable long id) {
+        return imageRepository.findOne(id).getMedium();
+    }
 
 }
