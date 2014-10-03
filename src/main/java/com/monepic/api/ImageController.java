@@ -47,12 +47,12 @@ public class ImageController {
         return imageRepository.findOne(id).getResource();
     }
 
-    @RequestMapping(value="{id}/thumb", method = RequestMethod.GET, produces = "image/png")
+    @RequestMapping(value="{id}/thumb", method = RequestMethod.GET, produces = "image/jpeg")
     public @ResponseBody Resource getThumb(@PathVariable long id) {
         return imageRepository.findOne(id).getThumbnail();
     }
 
-    @RequestMapping(value="{id}/medium", method = RequestMethod.GET, produces = "image/png")
+    @RequestMapping(value="{id}/medium", method = RequestMethod.GET, produces = "image/jpeg")
     public @ResponseBody Resource getMedium(@PathVariable long id) {
         return imageRepository.findOne(id).getMedium();
     }

@@ -6,4 +6,5 @@ import com.monepic.gallery.obj.Image;
 
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
+    Image findByPath(String path);
 }

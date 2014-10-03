@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("com.monepic.gallery.repo")
 @EnableTransactionManagement
 public class JPAConfig {
-    
+
     @Bean
     public DataSource dataSource() {
 
       EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-      return builder.setType(EmbeddedDatabaseType.H2).build();
+      return builder.setType(EmbeddedDatabaseType.H2).setName("gallery_db").build();
     }
 
     @Bean
@@ -31,6 +31,8 @@ public class JPAConfig {
 
       HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
       vendorAdapter.setGenerateDdl(true);
+      vendorAdapter.setShowSql(true);
+
 
       LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
       factory.setJpaVendorAdapter(vendorAdapter);

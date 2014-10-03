@@ -42,7 +42,7 @@ public class ImageUtils {
 
             img = resize(ImageIO.read(in = resource.getInputStream()), Method.BALANCED, size, OP_ANTIALIAS, OP_BRIGHTER);
 
-            ImageIO.write(img, "PNG", out = new ByteArrayOutputStream());
+            ImageIO.write(img, "JPEG", out = new ByteArrayOutputStream());
 
             return out.toByteArray();
 

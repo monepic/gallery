@@ -15,7 +15,6 @@ import com.monepic.gallery.obj.Album;
 import com.monepic.gallery.obj.Image;
 import com.monepic.gallery.repo.AlbumRepository;
 import com.monepic.gallery.repo.ImageRepository;
-import com.monepic.gallery.util.ImageUtils;
 
 @Component
 public class StorageConfig {
@@ -36,22 +35,32 @@ public class StorageConfig {
 
                 File basedir = new File(BASE_DIR);
 
-                LinkedList<Image> anonymousImages = new LinkedList<Image>();
+                LinkedList<Image> newAnonymousImages = new LinkedList<Image>();
 
                 for (File f : basedir.listFiles()) {
-                    if (f.isFile() && f.getName().endsWith("JPG")) { anonymousImages.add(toImage(f)); }
-                    else if (f.isDirectory()) {
+                    if (f.isFile() 
+                            && f.getName().endsWith("JPG")
+                            && imageRepository.findByPath(f.getAbsolutePath()) == null) { 
+
+                        newAnonymousImages.add(Image.fromFile(f)); 
+
+                    } else if (f.isDirectory()) {
                         Album a = toAlbum(f);
                         albumRepository.save(a);
                         LOG.info("Saved album {}", a);
                     }
                 }
 
-                if (!anonymousImages.isEmpty()) {
-                    Album a = new Album();
-                    a.setName("Untitled");
-                    a.setImages(anonymousImages);
+                if (!newAnonymousImages.isEmpty()) {
+
+                    Album a = albumRepository.findByPath(BASE_DIR);
+
+                    if (a == null) { a = new Album(); a.setName("Untitled"); }
+
+                    a.getImages().addAll(newAnonymousImages);
+
                     albumRepository.save(a);
+
                     LOG.info("Saved untitled album {}", a);
                 }
 
@@ -60,27 +69,23 @@ public class StorageConfig {
         }.start();
     }
 
-    private Image toImage(File file) {
-        Image image = new Image();
-        image.setName(file.getName());
-        image.setPath(file.getAbsolutePath());
-        image.setThumbnail(ImageUtils.toThumb(image.getResource()));
-        image.setMedium(ImageUtils.toMediumSize(image.getResource()));
-        return image;
-    }
-
     private Album toAlbum(File directory) {
 
-        Album a = new Album();
+        Album a = albumRepository.findByPath(directory.getAbsolutePath());
+
+        if (a == null) { a = new Album(); }
+
         a.setName(directory.getName());
 
-        List<Image> images = new LinkedList<Image>();
+        List<Image> images = a.getImages();
 
         for (File f : directory.listFiles()) {
-            if (f.isFile() && f.getName().endsWith("JPG")) { images.add(toImage(f)); }
+            if (f.isFile() 
+                    && f.getName().endsWith("JPG")
+                    && imageRepository.findByPath(f.getAbsolutePath()) == null) {
+                images.add(Image.fromFile(f)); 
+            }
         }
-
-        a.setImages(images);
 
         return a;
     }
