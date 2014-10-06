@@ -39,7 +39,7 @@ public class StorageConfig {
 
                 for (File f : basedir.listFiles()) {
                     if (f.isFile() 
-                            && f.getName().endsWith("JPG")
+                            && f.getName().toLowerCase().endsWith("jpg")
                             && imageRepository.findByPath(f.getAbsolutePath()) == null) { 
 
                         newAnonymousImages.add(Image.fromFile(f)); 
@@ -81,7 +81,7 @@ public class StorageConfig {
 
         for (File f : directory.listFiles()) {
             if (f.isFile() 
-                    && f.getName().endsWith("JPG")
+                    && f.getName().toLowerCase().endsWith("jpg")
                     && imageRepository.findByPath(f.getAbsolutePath()) == null) {
                 images.add(Image.fromFile(f)); 
             }
